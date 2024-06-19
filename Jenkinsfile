@@ -18,58 +18,48 @@ pipeline{
     }
     
     stages{
-        // stage('print the version'){
-        //     steps{
-        //         script{
-        //             echo "Application version: ${params.appVersion}"
-        //         }
-        //     }
+        stage('print the version'){
+            steps{
+                script{
+                    echo "Application version: ${params.appVersion}"
+                }
+            }
         
-        // }
-        // stage('Init'){
-        //    steps{
-        //         script{
-        //             sh """
-        //             cd terraform
-        //             terraform init
-
-        //             """
-        //        }
-        //     }
-        // }
-        // stage('Plan'){
-        //    steps{
-        //         script{
-        //             sh """
-        //             cd terraform
-        //             terraform plan -var="app_version"=${params.appVersion}
-
-        //             """
-        //        }
-        //     }
-        // }
-        // stage('Deploy'){
-        //    steps{
-        //         script{
-        //             sh """
-        //             cd terraform
-        //             terraform apply -auto-approve -var="app_version"=${params.appVersion}
-
-        //             """
-        //        }
-        //     }
-        // }
-         stage('Destroy'){
+        }
+        stage('Init'){
            steps{
                 script{
                     sh """
                     cd terraform
-                    terraform destroy -auto-approve -var="app_version"=${params.appVersion}
+                    terraform init
 
                     """
                }
             }
         }
+        stage('Plan'){
+           steps{
+                script{
+                    sh """
+                    cd terraform
+                    terraform plan -var="app_version"=${params.appVersion}
+
+                    """
+               }
+            }
+        }
+        stage('Deploy'){
+           steps{
+                script{
+                    sh """
+                    cd terraform
+                    terraform apply -auto-approve -var="app_version"=${params.appVersion}
+
+                    """
+               }
+            }
+        }
+        
     }
 
     post{
